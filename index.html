@@ -339,7 +339,7 @@ function grade(imgData,grainScale,seed){
 /* =====================================================================
    subtle beauty retouch  (eyes +, nose wings -, soft V jawline)
    ===================================================================== */
-var BEAUTY={eye:0.34, nose:0.28, jaw:0.060, skin:0.35}; // 0.70 → 0.35
+var BEAUTY={eye:0.34, jaw:0.060, skin:0.35}; // 0.70 → 0.35
 
 function smoothSkin(ctx,W,H,hd,amt){
   if(!hd||!amt) return;
@@ -381,8 +381,6 @@ function beautify(ctx,W,H,hd){
   var out=ctx.createImageData(bw,bh), o=out.data;
 
   var eyeY=fy+fh*0.36, eyeR=fw*0.18, eyeDX=fw*0.23;
-  var noseCY=fy+fh*0.58;      // 중심을 살짝 위로 (브릿지 포함)
-  var noseRx=fw*0.16, noseRy=fh*0.22;  // 가로/세로 반경 분리
   var jawTop=fy+fh*0.60, jawLen=fh*0.48;
 
   for(var yy=0;yy<bh;yy++){
@@ -395,12 +393,7 @@ function beautify(ctx,W,H,hd){
         if(r<eyeR){ t=1-r/eyeR; f=1/(1+BEAUTY.eye*t*t); sx=ecx+dx*f; sy=eyeY+dy*f; }
       }
       /* nose wings : narrow slightly */
-      var ndx=(sx-fx)/noseRx, ndy=(sy-noseCY)/noseRy;
-      var nr=Math.sqrt(ndx*ndx+ndy*ndy);
-      if(nr<1){
-        var nt=1-nr;
-        sx = fx + (sx-fx)*(1+BEAUTY.nose*nt*nt);
-      }
+
       /* jaw : soft V-line */
       t=(sy-jawTop)/jawLen;
       if(t>0&&t<1){
