@@ -273,11 +273,13 @@ window.addEventListener('scroll',function(){window.scrollTo(0,0);},{passive:true
 /* =====================================================================
    CANON IXUS 70 · CCD COLOR PROFILE
    ===================================================================== */
-var P={scurve:0.44,black:0.012,
-  rGain:1.010,rOff:0.004,gGain:1.000,gOff:0.002,bGain:1.055,bOff:0.004,
-  warmHiR:0.010,warmHiG:0.006,warmHiB:0.006,coolShB:0.062,coolShR:-0.018,
-  redBoost:0.20,blueBoost:0.38,sat:1.30,skinSat:0.80,skinLum:1.075,
-  vignette:0.24,grain:0.062,sharpen:0.55};
+/* Canon portrait profile : clean warm-neutral skin, no red cast */
+var P={scurve:0.30,black:0.010,
+  rGain:0.994,rOff:0.006,gGain:1.002,gOff:0.004,bGain:1.014,bOff:0.002,
+  warmHiR:0.014,warmHiG:0.010,warmHiB:-0.004,coolShB:0.026,coolShR:-0.008,
+  redBoost:0.06,blueBoost:0.18,sat:1.14,
+  skinSat:0.88,skinLum:1.045,skinRed:0.055,skinGrn:0.016,
+  vignette:0.16,grain:0.045,sharpen:0.48};
 
 function sc(x){ var s=x*x*(3-2*x); return x+(s-x)*P.scurve; }
 function hash(x,y,s){
@@ -315,12 +317,17 @@ function grade(imgData,grainScale,seed){
       var cr=128+0.5*R-0.418688*G-0.081312*B;
       var cb=128-0.168736*R-0.331264*G+0.5*B;
       var sat=P.sat;
-      if(cr>134&&cr<179&&cb>76&&cb<128&&R>G&&G>B&&R>55){
+      var isSkin=(cr>134&&cr<179&&cb>76&&cb<128&&R>G&&G>B&&R>55);
+      if(isSkin){
+        /* pull the red out of skin, nudge toward Canon's warm-yellow tone */
+        var ex=r-(g+b)*0.5; if(ex>0){ r-=P.skinRed*ex; g+=P.skinGrn*ex; }
         sat*=P.skinSat; r*=P.skinLum; g*=P.skinLum; b*=P.skinLum;
       }
       lum=0.2126*r+0.7152*g+0.0722*b;
       r=lum+(r-lum)*sat; g=lum+(g-lum)*sat; b=lum+(b-lum)*sat;
-      var rd=r-(g+b)*0.5; if(rd>0) r+=P.redBoost*rd;
+      if(!isSkin){
+        var rd=r-(g+b)*0.5; if(rd>0) r+=P.redBoost*rd;
+      }
       var bl=b-(r+g)*0.5; if(bl>0) b+=P.blueBoost*bl;
       var nx=(x*invW-0.5)*2, rad=nx*nx+ny2, vig=1-P.vignette*rad*0.75;
       r*=vig;g*=vig;b*=vig;
