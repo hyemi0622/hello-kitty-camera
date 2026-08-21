@@ -339,7 +339,7 @@ function grade(imgData,grainScale,seed){
 /* =====================================================================
    subtle beauty retouch  (eyes +, nose wings -, soft V jawline)
    ===================================================================== */
-var BEAUTY={eye:0.34, nose:0.28, jaw:0.060, face:0.045, skin:0.35}; // 0.70 → 0.35
+var BEAUTY={eye:0.34, nose:0.28, jaw:0.060, skin:0.35}; // 0.70 → 0.35
 
 function smoothSkin(ctx,W,H,hd,amt){
   if(!hd||!amt) return;
@@ -408,11 +408,6 @@ function beautify(ctx,W,H,hd){
         var ax=Math.abs(sx-fx)/(fw*0.75);
         if(ax<1){ sx=fx+(sx-fx)*(1+k*(1-ax*ax*0.4)); }
       }
-      /* face : slight overall slimming */
-      var nfx=(sx-fx)/(fw*0.95), nfy=(sy-(fy+fh*0.5))/(fh*0.75);
-      r=Math.sqrt(nfx*nfx+nfy*nfy);
-      if(r<1){ t=1-r; f=1+BEAUTY.face*t*t;
-        sx=fx+(sx-fx)*f; sy=(fy+fh*0.5)+(sy-(fy+fh*0.5))*f; }
       /* bilinear sample (local coords, clamped) */
       var lx=sx-x0, ly=sy-y0;
       if(lx<0)lx=0; if(ly<0)ly=0; if(lx>bw-1.001)lx=bw-1.001; if(ly>bh-1.001)ly=bh-1.001;
