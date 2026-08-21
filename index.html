@@ -30,20 +30,24 @@ body{
 }
 img{display:block;pointer-events:none;-webkit-user-drag:none;}
 
-#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden;}
-#stage{position:relative;width:402px;height:874px;background:#fff;
-  transform-origin:center center;transform:scale(var(--s,1));flex:0 0 auto;}
+#viewport{position:fixed;inset:0;background:#fff;
+  overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:none;}
+#box{position:relative;width:100%;}
+#stage{position:absolute;left:50%;top:0;width:402px;height:1056px;margin-left:-201px;
+  background:#fff;transform-origin:top center;transform:scale(var(--s,1));}
 
 /* header */
 #bg-stars{position:absolute;left:0;top:0;width:402px;height:258px;object-fit:cover;}
-#logo-plate{position:absolute;left:51px;top:77px;width:300px;height:36px;background:#fff;}
+#logo-plate{position:absolute;left:11px;top:76px;width:380px;height:38px;background:#fff;}
 #logo{position:absolute;left:92px;top:23px;width:199px;height:41px;object-fit:contain;}
-#tagline{position:absolute;left:51px;top:80px;width:300px;height:30px;
-  font-size:11px;line-height:15px;font-weight:500;text-align:center;color:#565656;
-  letter-spacing:-0.2px;white-space:pre-line;}
+#tagline{position:absolute;left:11px;top:80px;width:380px;height:30px;
+  font-size:10.5px;line-height:15px;font-weight:500;text-align:center;color:#565656;
+  letter-spacing:-0.3px;}
+#tagline div{white-space:nowrap;}
 
 /* camera */
-#cam-wrap{position:absolute;left:24px;top:151px;width:350px;height:289px;}
+#cam-wrap{position:absolute;left:11px;top:140px;width:350px;height:289px;
+  transform:scale(1.0857);transform-origin:top left;}
 #cam-body{position:absolute;inset:0;width:350px;height:289px;z-index:3;
   filter:drop-shadow(0 6px 14px rgba(0,0,0,.10));}
 #screen{position:absolute;left:50.8px;top:69.8px;width:160.8px;height:122.2px;
@@ -75,11 +79,11 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
   background:#7ef08a;box-shadow:0 0 6px 2px rgba(80,240,120,.8);opacity:0;
   transition:opacity .3s;z-index:7;pointer-events:none;}
 #pw-led.on{opacity:1;}
-#hint{position:absolute;left:0;top:442px;width:402px;height:16px;text-align:center;
+#hint{position:absolute;left:0;top:462px;width:402px;height:16px;text-align:center;
   font-size:10.5px;line-height:16px;color:#9b9b9b;letter-spacing:-0.2px;}
 
 /* action row */
-.act{position:absolute;top:462px;height:24px;background:transparent;border:0;padding:0 2px;
+.act{position:absolute;top:486px;height:24px;background:transparent;border:0;padding:0 2px;
   z-index:9;font-family:inherit;font-size:11px;line-height:24px;font-weight:500;
   color:#8A302D;opacity:0;pointer-events:none;transition:opacity .3s ease;letter-spacing:-0.3px;}
 #saveP{left:26px;width:104px;text-align:left;color:#7a7a7a;}
@@ -89,10 +93,12 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
 .act:active{opacity:.5;}
 
 /* print slot + polaroid */
-#slot{position:absolute;left:28px;top:488px;width:346px;height:4px;background:#C8C8C8;
+#slot{position:absolute;left:20px;top:536px;width:362px;height:4px;background:#C8C8C8;
   box-shadow:0 2px 6px rgba(0,0,0,.2);z-index:8;border-radius:2px;}
-#print-clip{position:absolute;left:0;top:490px;width:402px;height:268px;overflow:hidden;z-index:7;}
-#polaroid{position:absolute;left:56px;top:0;width:292px;height:257px;
+#print-clip{position:absolute;left:0;top:538px;width:402px;height:320px;overflow:hidden;z-index:7;}
+#pola-wrap{position:absolute;left:31px;top:0;width:292px;height:257px;
+  transform:scale(1.1644);transform-origin:top left;}
+#polaroid{position:absolute;left:0;top:0;width:292px;height:257px;
   transform:translateY(-262px);transition:transform 1.05s cubic-bezier(.22,.68,.32,1);
   filter:drop-shadow(0 8px 16px rgba(0,0,0,.18));}
 #stage.shot #polaroid{transform:translateY(0);}
@@ -116,15 +122,15 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
 .stk.sel .del,.stk.sel .hnd{display:flex;}
 
 /* sticker tray */
-#tray-t{position:absolute;left:0;top:749px;width:402px;text-align:center;
+#tray-t{position:absolute;left:0;top:866px;width:402px;text-align:center;
   font-size:10px;line-height:13px;color:#9b9b9b;letter-spacing:-0.2px;}
-#tray{position:absolute;left:95px;top:762px;width:212px;height:108px;
-  display:grid;grid-template-columns:repeat(3,34px);grid-template-rows:repeat(3,34px);
-  gap:3px 55px;z-index:9;}
+#tray{position:absolute;left:31px;top:882px;width:340px;height:160px;
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,48px);
+  gap:8px 0;justify-items:center;align-items:center;z-index:9;}
 /* every sticker sits in the same invisible square box */
-#tray button{width:34px;height:34px;background:transparent;border:0;padding:0;
+#tray button{width:48px;height:48px;background:transparent;border:0;padding:0;
   display:flex;align-items:center;justify-content:center;}
-#tray img{width:34px;height:34px;object-fit:contain;}
+#tray img{width:48px;height:48px;object-fit:contain;}
 #tray button:active{transform:scale(.88);}
 #tray.off{opacity:.28;pointer-events:none;}
 
@@ -146,12 +152,12 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
 </head>
 <body>
 <div id="viewport">
+  <div id="box">
   <div id="stage">
     <img id="bg-stars" alt="">
     <div id="logo-plate"></div>
     <img id="logo" alt="HELLO KITTY">
-    <div id="tagline">레트로 감성의 키티 카메라입니다.
-색감은 캐논 익서스 70과 유사하게 구성했습니다.</div>
+    <div id="tagline"><div>레트로 감성의 키티 카메라입니다.</div><div>색감은 캐논 익서스 70과 유사하게 구성했습니다.</div></div>
 
     <div id="cam-wrap">
       <div id="screen">
@@ -170,15 +176,17 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
 
     <div id="hint">전원 버튼을 눌러 카메라를 켜세요</div>
 
-    <button class="act" id="saveP" type="button">폴라로이드 저장</button>
+    <button class="act" id="saveP" type="button">저장</button>
     <button class="act" id="saveR" type="button">사진만 저장</button>
     <button class="act" id="retake" type="button">다시 찍기</button>
 
     <div id="slot"></div>
     <div id="print-clip">
+      <div id="pola-wrap">
       <div id="polaroid">
         <img id="shot-img" alt="촬영된 사진">
         <div id="stk-layer"></div>
+      </div>
       </div>
     </div>
 
@@ -186,6 +194,7 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
     <div id="tray" class="off"></div>
 
     <div id="flash"></div>
+  </div>
   </div>
 </div>
 
@@ -221,12 +230,16 @@ try{
 }catch(e){}
 
 /* ---------- stage scaling ---------- */
-var BASE_W=402, BASE_H=874, stage=document.getElementById('stage'), SCALE=1;
+var BASE_W=402, BASE_H=1056, stage=document.getElementById('stage'), SCALE=1;
+var box=document.getElementById('box');
 function fit(){
   var w=window.innerWidth, h=window.innerHeight;
   if(window.visualViewport){ w=window.visualViewport.width; h=window.visualViewport.height; }
-  SCALE=Math.min(Math.min(w/BASE_W,h/BASE_H),1.25);
+  SCALE=Math.min(w/BASE_W,1.3);
   stage.style.setProperty('--s',SCALE);
+  var sh=BASE_H*SCALE;
+  stage.style.top = sh<h ? ((h-sh)/2)+'px' : '0px';
+  box.style.height = Math.max(sh,h)+'px';
 }
 fit();
 window.addEventListener('resize',fit,{passive:true});
@@ -253,11 +266,11 @@ window.addEventListener('scroll',function(){window.scrollTo(0,0);},{passive:true
 /* =====================================================================
    CANON IXUS 70 · CCD COLOR PROFILE
    ===================================================================== */
-var P={scurve:0.32,black:0.010,
-  rGain:1.018,rOff:0.004,gGain:1.000,gOff:0.002,bGain:1.012,bOff:0.000,
-  warmHiR:0.020,warmHiG:0.008,warmHiB:-0.010,coolShB:0.032,coolShR:-0.006,
-  redBoost:0.20,blueBoost:0.18,sat:1.20,skinSat:0.84,skinLum:0.965,
-  vignette:0.20,grain:0.050,sharpen:0.42};
+var P={scurve:0.44,black:0.012,
+  rGain:1.030,rOff:0.006,gGain:1.000,gOff:0.002,bGain:1.022,bOff:0.000,
+  warmHiR:0.032,warmHiG:0.010,warmHiB:-0.018,coolShB:0.046,coolShR:-0.010,
+  redBoost:0.34,blueBoost:0.30,sat:1.33,skinSat:0.80,skinLum:0.955,
+  vignette:0.24,grain:0.062,sharpen:0.55};
 
 function sc(x){ var s=x*x*(3-2*x); return x+(s-x)*P.scurve; }
 function hash(x,y,s){
@@ -431,7 +444,7 @@ function startCam(){
   .then(function(s){ stream=s; video.srcObject=s; return video.play(); })
   .then(function(){
     screenEl.classList.add('on'); led.classList.add('on');
-    hint.textContent='OK 버튼을 길게 눌러 촬영';
+    hint.textContent='';
     msg.textContent='';
     if(!running){running=true;loop();}
   })
@@ -662,8 +675,8 @@ function build(s){
   place(s);
 
   var mode=null, sx=0, sy=0, o={};
-  function p2s(ev){ var r=layer.getBoundingClientRect();
-    return {x:(ev.clientX-r.left)/SCALE, y:(ev.clientY-r.top)/SCALE}; }
+  function p2s(ev){ var r=layer.getBoundingClientRect(), k=r.width/292;
+    return {x:(ev.clientX-r.left)/k, y:(ev.clientY-r.top)/k}; }
   function down(ev,m){
     ev.preventDefault(); ev.stopPropagation();
     select(s); mode=m; var p=p2s(ev); sx=p.x; sy=p.y;
