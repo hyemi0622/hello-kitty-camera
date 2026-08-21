@@ -339,8 +339,8 @@ function grade(imgData,grainScale,seed){
 /* =====================================================================
    subtle beauty retouch  (eyes +, nose wings -, soft V jawline)
    ===================================================================== */
-var BEAUTY={eye:0.34, nose:0.28, jaw:0.060, face:0.045, skin:0.70};
-/* 피부에만 적용되는 에지 보존 스무딩 (주름·잡티 완화) */
+var BEAUTY={eye:0.34, nose:0.28, jaw:0.060, face:0.045, skin:0.35}; // 0.70 → 0.35
+
 function smoothSkin(ctx,W,H,hd,amt){
   if(!hd||!amt) return;
   var fw=hd.w*W; if(fw<W*0.12||fw>W*0.95) return;
@@ -349,18 +349,18 @@ function smoothSkin(ctx,W,H,hd,amt){
   var y0=Math.max(0,(fy-fh*0.10)|0), y1=Math.min(H,(fy+fh*1.20)|0);
   var bw=x1-x0, bh=y1-y0; if(bw<16||bh<16) return;
   var img=ctx.getImageData(x0,y0,bw,bh), d=img.data, s=new Uint8ClampedArray(d);
-  var st=Math.max(1,Math.round(fw*0.018));   // 샘플 간격
+  var st=Math.max(1,Math.round(fw*0.010));   // 0.018 → 0.010 (샘플 간격 축소)
   for(var y=0;y<bh;y++)for(var x=0;x<bw;x++){
     var i=(y*bw+x)*4, R=s[i],G=s[i+1],B=s[i+2];
     var cr=128+0.5*R-0.418688*G-0.081312*B, cb=128-0.168736*R-0.331264*G+0.5*B;
     if(!(cr>134&&cr<179&&cb>76&&cb<128&&R>G&&G>B&&R>55)) continue;
     var L=0.299*R+0.587*G+0.114*B, ar=0,ag=0,ab=0,n=0;
-    for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++){
+    for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){   // -2~2 → -1~1 (3x3)
       var nx=x+dx*st, ny=y+dy*st;
       if(nx<0||ny<0||nx>=bw||ny>=bh) continue;
       var j=(ny*bw+nx)*4;
       var L2=0.299*s[j]+0.587*s[j+1]+0.114*s[j+2];
-      if(Math.abs(L2-L)>26) continue;          // 눈·입·윤곽선은 보존
+      if(Math.abs(L2-L)>18) continue;          // 26 → 18 (경계 보존 강화)
       ar+=s[j]; ag+=s[j+1]; ab+=s[j+2]; n++;
     }
     if(n<3) continue;
