@@ -163,8 +163,7 @@ img{display:block;pointer-events:none;-webkit-user-drag:none;}
     <img id="bg-stars" alt="">
     <div id="logo-plate"></div>
     <img id="logo" alt="HELLO KITTY">
-    <div id="tagline"><div>레트로 감성의 키티 카메라입니다.</div>
-
+    <div id="tagline"><div>레트로 감성의 키티 카메라입니다.</div></div>
     <div id="cam-wrap">
       <div id="screen">
         <canvas id="preview" width="320" height="243"></canvas>
@@ -662,6 +661,7 @@ function capture(){
   clickSound();
   setTimeout(function(){
     drawCover(shctx,SHOT_W,SHOT_H,facing==='user');
+    smoothSkin(shctx,SHOT_W,SHOT_H,headEMA,BEAUTY.skin);
     beautify(shctx,SHOT_W,SHOT_H,headEMA);
     var img=shctx.getImageData(0,0,SHOT_W,SHOT_H);
     grade(img,2.4,(Math.random()*1000)|0);
