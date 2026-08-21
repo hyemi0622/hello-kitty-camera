@@ -270,22 +270,24 @@ document.addEventListener('touchend',function(e){
 window.addEventListener('scroll',function(){window.scrollTo(0,0);},{passive:true});
 
 /* =====================================================================
-    CCD COLOR PROFILE
+    CCD COLOR PROFILE (실사진 2장 실측 기반 보정)
    ===================================================================== */
 /* Vintage digicam profile */
 var P={scurve:0.26,black:0.030,
   rGain:0.992,rOff:0.010,gGain:1.000,gOff:0.008,bGain:1.008,bOff:0.014,
-  warmHiR:0.030,warmHiG:0.018,warmHiB:-0.014,coolShB:0.040,coolShR:-0.014,
+  warmHiR:0.055,warmHiG:0.028,warmHiB:-0.026,coolShB:0.040,coolShR:-0.014,
   redBoost:0.05,blueBoost:0.14,sat:1.08,
-  skinSat:0.90,skinLum:1.060,skinRed:0.070,skinGrn:0.020,
+  skinSat:0.78,skinLum:1.100,skinRed:0.070,skinGrn:0.020,
   vignette:0.30,grain:0.085,sharpen:0.30};
 
 function sc(x){ var s=x*x*(3-2*x); return x+(s-x)*P.scurve; }
+
 function hash(x,y,s){
   var n=(x*374761393+y*668265263+s*97)|0;
   n=(n^(n>>13))*1274126177;
   return (((n^(n>>16))>>>0)/4294967295)-0.5;
 }
+
 function sharpen(d,w,h,amt){
   var src=new Uint8ClampedArray(d),i,c,lap;
   for(var y=1;y<h-1;y++)for(var x=1;x<w-1;x++){
@@ -297,6 +299,7 @@ function sharpen(d,w,h,amt){
     }
   }
 }
+
 function grade(imgData,grainScale,seed){
   var d=imgData.data,w=imgData.width,h=imgData.height;
   if(P.sharpen>0) sharpen(d,w,h,P.sharpen);
@@ -335,7 +338,6 @@ function grade(imgData,grainScale,seed){
     }
   }
 }
-
 /* =====================================================================
    subtle beauty retouch  (eyes +, nose wings -, soft V jawline)
    ===================================================================== */
